@@ -23,8 +23,9 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             background-color: white;
-            max-width: 500px; /* Широчина за десктоп */
+            max-width: 500px;
             width: 100%;
+            box-sizing: border-box;
         }
 
         .calculator label {
@@ -33,21 +34,24 @@
         }
 
         .calculator input, .calculator select {
-            width: calc(100% - 20px);
+            width: 100%;
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            box-sizing: border-box;
         }
 
         .calculator button {
             background-color: #007bff;
             color: white;
-            padding: 10px 20px;
+            padding: 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%; /* бутонът е на 100% от широчината на контейнера */
+            width: 100%;
+            margin-top: 10px;
+            box-sizing: border-box;
         }
 
         .calculator button:hover {
@@ -64,17 +68,22 @@
         /* Media query for smaller screens */
         @media (max-width: 768px) {
             .calculator {
-                max-width: 100%; /* за по-малки екрани */
-                margin: 20px; 
+                max-width: 100%;
+                margin: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .result {
+                font-size: 16px;
             }
         }
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.5em; /* Намаляване на размера на заглавието на мобилни устройства */
-            }
-            .result {
-                font-size: 16px; /* Малко по-малък шрифт за резултата */
+                font-size: 1.2em;
             }
         }
     </style>
@@ -150,27 +159,4 @@
         }
 
         function calculateCustomsVAT() {
-            const purchaseAmount2 = parseFloat(document.getElementById('purchaseAmount2').value) || 0;
-            const transportCost = parseFloat(document.getElementById('transportType').value) || 0;
-
-            // Calculate customs and VAT
-            const customs = purchaseAmount2 * 0.25;
-            const vat = customs * 0.33;
-            const totalCustomsVAT = vat + 1300;
-            const finalTotal = totalCustomsVAT + transportCost;
-
-            // Display the result
-            document.getElementById('result2').innerText = `Customs and VAT + Transport: ${finalTotal.toFixed(2)} BGN`;
-        }
-
-        function calculateFinalTotal() {
-            const totalCost = parseFloat(document.getElementById('result1').innerText.replace('Total Cost: ', '').replace(' BGN', '')) || 0;
-            const customsVAT = parseFloat(document.getElementById('result2').innerText.replace('Customs and VAT + Transport: ', '').replace(' BGN', '')) || 0;
-
-            const finalTotal = totalCost + customsVAT;
-
-            document.getElementById('result3').innerText = `Final Total: ${finalTotal.toFixed(2)} BGN`;
-        }
-    </script>
-</body>
-</html>
+            const
