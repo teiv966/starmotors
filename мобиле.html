@@ -95,21 +95,20 @@
     <div class="calculator">
         <h2>Car Purchase and Additional Costs</h2>
         <label for="carPrice">Car Price (CAD):</label>
-        <input type="number" id="carPrice" placeholder="Enter car price in CAD">
+        <input type="number" id="carPrice" placeholder="Enter car price in CAD" onchange="calculateTotalCost()" onfocus="zoomOut()">
         
         <label for="purchaseType">Purchase Type:</label>
-        <select id="purchaseType">
+        <select id="purchaseType" onchange="calculateTotalCost()">
             <option value="500">Dealer (500 CAD)</option>
             <option value="1000">Auction (1000 CAD)</option>
         </select>
 
         <label for="transportFee">Transport Fee (CAD):</label>
-        <input type="number" id="transportFee" placeholder="Enter transport fee in CAD">
-
+        <input type="number" id="transportFee" placeholder="Enter transport fee in CAD" onchange="calculateTotalCost()">
+        
         <label for="exchangeRate">Exchange Rate (CAD to BGN):</label>
-        <input type="number" id="exchangeRate" placeholder="Enter exchange rate">
+        <input type="number" id="exchangeRate" placeholder="Enter exchange rate" onchange="calculateTotalCost()">
 
-        <button onclick="calculateTotalCost()">Calculate Total Cost</button>
         <div class="result" id="result1"></div>
     </div>
 
@@ -117,15 +116,14 @@
     <div class="calculator">
         <h2>Customs and VAT</h2>
         <label for="purchaseAmount2">Purchase Amount (CAD):</label>
-        <input type="number" id="purchaseAmount2" placeholder="Enter purchase amount in CAD">
-
+        <input type="number" id="purchaseAmount2" placeholder="Enter purchase amount in CAD" onchange="calculateCustomsVAT()">
+        
         <label for="transportType">Transport Type:</label>
-        <select id="transportType">
+        <select id="transportType" onchange="calculateCustomsVAT()">
             <option value="1600">Light Car (1600 BGN)</option>
             <option value="2100">SUV (2100 BGN)</option>
         </select>
 
-        <button onclick="calculateCustomsVAT()">Calculate Customs and VAT</button>
         <div class="result" id="result2"></div>
     </div>
 
@@ -135,7 +133,6 @@
         <label for="finalTotal">Final Total (BGN):</label>
         <input type="number" id="finalTotal" placeholder="Calculated automatically" readonly>
 
-        <button onclick="calculateFinalTotal()">Calculate Final Total</button>
         <div class="result" id="result3"></div>
     </div>
 
@@ -146,17 +143,42 @@
             const transportFee = parseFloat(document.getElementById('transportFee').value) || 0;
             const exchangeRate = parseFloat(document.getElementById('exchangeRate').value) || 0;
 
-            // Calculate the first cost
             const price15 = carPrice * 0.15;
             const cost15 = price15 * 0.15;
             const totalCost = carPrice + cost15 + purchaseType + transportFee;
-
-            // Convert to BGN
             const finalPrice = totalCost * exchangeRate;
 
-            // Display the result
             document.getElementById('result1').innerText = `Total Cost: ${finalPrice.toFixed(2)} BGN`;
+
+            calculateFinalTotal();  // Auto calculate the final total
         }
 
         function calculateCustomsVAT() {
-            const
+            const purchaseAmount2 = parseFloat(document.getElementById('purchaseAmount2').value) || 0;
+            const transportCost = parseFloat(document.getElementById('transportType').value) || 0;
+
+            const customs = purchaseAmount2 * 0.25;
+            const vat = customs * 0.33;
+            const totalCustomsVAT = vat + 1300;
+            const finalTotal = totalCustomsVAT + transportCost;
+
+            document.getElementById('result2').innerText = `Customs and VAT + Transport: ${finalTotal.toFixed(2)} BGN`;
+
+            calculateFinalTotal();  // Auto calculate the final total
+        }
+
+        function calculateFinalTotal() {
+            const totalCost = parseFloat(document.getElementById('result1').innerText.replace('Total Cost: ', '').replace(' BGN', '')) || 0;
+            const customsVAT = parseFloat(document.getElementById('result2').innerText.replace('Customs and VAT + Transport: ', '').replace(' BGN', '')) || 0;
+
+            const finalTotal = totalCost + customsVAT;
+            document.getElementById('finalTotal').value = finalTotal.toFixed(2);
+            document.getElementById('result3').innerText = `Final Total: ${finalTotal.toFixed(2)} BGN`;
+        }
+
+        function zoomOut() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
