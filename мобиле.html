@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Car Cost Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .calculator {
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            max-width: 500px; /* Широчина за десктоп */
+            width: 100%;
+        }
+
+        .calculator label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .calculator input, .calculator select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .calculator button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%; /* бутонът е на 100% от широчината на контейнера */
+        }
+
+        .calculator button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            .calculator {
+                max-width: 100%; /* за по-малки екрани */
+                margin: 20px; 
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em; /* Намаляване на размера на заглавието на мобилни устройства */
+            }
+            .result {
+                font-size: 16px; /* Малко по-малък шрифт за резултата */
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Advanced Car Cost Calculator</h1>
+
+    <!-- Calculator 1: Car Purchase and Additional Costs -->
+    <div class="calculator">
+        <h2>Car Purchase and Additional Costs</h2>
+        <label for="carPrice">Car Price (CAD):</label>
+        <input type="number" id="carPrice" placeholder="Enter car price in CAD">
+        
+        <label for="purchaseType">Purchase Type:</label>
+        <select id="purchaseType">
+            <option value="500">Dealer (500 CAD)</option>
+            <option value="1000">Auction (1000 CAD)</option>
+        </select>
+
+        <label for="transportFee">Transport Fee (CAD):</label>
+        <input type="number" id="transportFee" placeholder="Enter transport fee in CAD">
+
+        <label for="exchangeRate">Exchange Rate (CAD to BGN):</label>
+        <input type="number" id="exchangeRate" placeholder="Enter exchange rate">
+
+        <button onclick="calculateTotalCost()">Calculate Total Cost</button>
+        <div class="result" id="result1"></div>
+    </div>
+
+    <!-- Calculator 2: Customs and VAT -->
+    <div class="calculator">
+        <h2>Customs and VAT</h2>
+        <label for="purchaseAmount2">Purchase Amount (CAD):</label>
+        <input type="number" id="purchaseAmount2" placeholder="Enter purchase amount in CAD">
+
+        <label for="transportType">Transport Type:</label>
+        <select id="transportType">
+            <option value="1600">Light Car (1600 BGN)</option>
+            <option value="2100">SUV (2100 BGN)</option>
+        </select>
+
+        <button onclick="calculateCustomsVAT()">Calculate Customs and VAT</button>
+        <div class="result" id="result2"></div>
+    </div>
+
+    <!-- Final Total Calculator -->
+    <div class="calculator">
+        <h2>Final Total Calculation</h2>
+        <label for="finalTotal">Final Total (BGN):</label>
+        <input type="number" id="finalTotal" placeholder="Calculated automatically" readonly>
+
+        <button onclick="calculateFinalTotal()">Calculate Final Total</button>
+        <div class="result" id="result3"></div>
+    </div>
+
+    <script>
+        function calculateTotalCost() {
+            const carPrice = parseFloat(document.getElementById('carPrice').value) || 0;
+            const purchaseType = parseFloat(document.getElementById('purchaseType').value) || 0;
+            const transportFee = parseFloat(document.getElementById('transportFee').value) || 0;
+            const exchangeRate = parseFloat(document.getElementById('exchangeRate').value) || 0;
+
+            // Calculate the first cost
+            const price15 = carPrice * 0.15;
+            const cost15 = price15 * 0.15;
+            const totalCost = carPrice + cost15 + purchaseType + transportFee;
+
+            // Convert to BGN
+            const finalPrice = totalCost * exchangeRate;
+
+            // Display the result
+            document.getElementById('result1').innerText = `Total Cost: ${finalPrice.toFixed(2)} BGN`;
+        }
+
+        function calculateCustomsVAT() {
+            const purchaseAmount2 = parseFloat(document.getElementById('purchaseAmount2').value) || 0;
+            const transportCost = parseFloat(document.getElementById('transportType').value) || 0;
+
+            // Calculate customs and VAT
+            const customs = purchaseAmount2 * 0.25;
+            const vat = customs * 0.33;
+            const totalCustomsVAT = vat + 1300;
+            const finalTotal = totalCustomsVAT + transportCost;
+
+            // Display the result
+            document.getElementById('result2').innerText = `Customs and VAT + Transport: ${finalTotal.toFixed(2)} BGN`;
+        }
+
+        function calculateFinalTotal() {
+            const totalCost = parseFloat(document.getElementById('result1').innerText.replace('Total Cost: ', '').replace(' BGN', '')) || 0;
+            const customsVAT = parseFloat(document.getElementById('result2').innerText.replace('Customs and VAT + Transport: ', '').replace(' BGN', '')) || 0;
+
+            const finalTotal = totalCost + customsVAT;
+
+            document.getElementById('result3').innerText = `Final Total: ${finalTotal.toFixed(2)} BGN`;
+        }
+    </script>
+</body>
+</html>
